@@ -1,2 +1,1 @@
-# eon-test
-This repo contains the solution to the EON Case Study
+The details of the project
