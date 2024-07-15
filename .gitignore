@@ -2,3 +2,4 @@
 .venv
 *logs.txt
 .idea/
+__pycache__/
