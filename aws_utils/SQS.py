@@ -26,11 +26,29 @@ class SQS:
         return self.__queue_url
 
 
+    def get_new_messages(self):
+        self.__logger.log_debug(f"Getting new messages from: {self.name}")
+        return self.boto3_client.receive_message(
+            QueueUrl=self.queue_url,
+            MaxNumberOfMessages=2,
+            VisibilityTimeout=0,
+        ).get('Messages',[])
+
+    def remove_messages_batch(self, messages):
+        self.boto3_client.delete_message_batch(
+            QueueUrl = self.queue_url,
+            Entries = messages
+        )
+
+    def remove_message(self, receipt_handle):
+        self.boto3_client.delete_message(
+            QueueUrl = self.queue_url,
+            ReceiptHandle = receipt_handle
+        )
+
     def check_queue_for_new_messages(self):
         self.__logger.log_debug(f"Checking Queue: {self.name} for new messages")
-        return len(self.boto3_client.receive_message(
-            QueueUrl=self.queue_url
-        ).get('Messages',[])) > 0
+        return len(self.get_new_messages()) > 0
 
     def delete_all_messages(self):
         self.__logger.log_debug(f"Deleting all Messages from Queue: {self.name}")
