@@ -41,7 +41,7 @@ def process_queue(queue_name, silver_bucket):
         to_delete = []
         for message in sqs.get_new_messages():
             try:
-                s3_uri, source_bucket = get_file_s3_uri(message)
+                s3_uri = get_file_s3_uri(message)
                 transform_and_save(s3_uri, silver_bucket)
                 to_delete.append({
                     'Id': message['MessageId'],

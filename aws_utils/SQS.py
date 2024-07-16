@@ -7,7 +7,7 @@ class SQS:
         self.__name = name
         self.__boto3_client = get_sqs_client()
         self.__queue_url = self.__boto3_client.get_queue_url(QueueName=self.__name)['QueueUrl']
-        self.__logger = LoggerGenerator().get_file_logger("file","SQSLogger")
+        self.__logger = LoggerGenerator().get_logger("file", "SQSLogger")
 
     @property
     def name(self):
