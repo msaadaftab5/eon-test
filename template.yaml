@@ -1,31 +1,20 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: >
-  test
+Description: AWS SAM Template for Deploying S3 Buckets, Transformation Lambda Function 
+  and SQS Queue with Proper permissions
 
-  Sample SAM Template for test
-
-# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
-# Globals:
-#   Function:
-#     Timeout: 3
-#     MemorySize: 128
-
-#     # You can add LoggingConfig parameters such as the Logformat, Log Group, and SystemLogLevel or ApplicationLogLevel. Learn more here https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html#sam-function-loggingconfig.
-#     LoggingConfig:
-#       LogFormat: JSON
 Resources:
   AWSWranglerLayer:
     Type: AWS::Serverless::LayerVersion
     Properties:
       LayerName: aws-wrangler-layer
-      Description: AWS Wrangler layer from GitHub
-      ContentUri: awswrangler-layer-3.9.0-py3.11.zip
+      Description: AWS Wrangler layer for AWS Wrangler Library
+      ContentUri: aws_wrangler_layer/aws_wrangler_layer.zip
       CompatibleRuntimes:
         - python3.9
 
   BronzeTransformationFunction:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Type: AWS::Serverless::Function
     Properties:
       CodeUri: bronze_transformer/
       Handler: bronze_transformer.lambda_handler
@@ -34,13 +23,16 @@ Resources:
       - x86_64
       Timeout: 900
       MemorySize: 1024
-      Layers:
-        - !Ref AWSWranglerLayer
-
-    # You can add LoggingConfig parameters such as the Logformat, Log Group, and SystemLogLevel or ApplicationLogLevel. Learn more here https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html#sam-function-loggingconfig.
       LoggingConfig:
         LogFormat: JSON
-
+      Environment:
+        Variables:
+          silver_bucket: !Ref SilverS3Bucket
+          queue_name: !Ref RawBucketEventsQueue
+      Layers:
+        - !Ref AWSWranglerLayer
+#         We can use the AWS Provided layer for AWS Wrangler but it cannot work with localstack
+#         arn:aws:serverlessrepo:us-east-1:336392948345:applications/aws-data-wrangler-layer-py3-9
   BronzeS3Bucket:
     Type: 'AWS::S3::Bucket'
     DeletionPolicy: Delete
@@ -50,14 +42,12 @@ Resources:
           QueueConfigurations:
             - Event: s3:ObjectCreated:*
               Queue: !GetAtt RawBucketEventsQueue.Arn
-    #close permissions to just upload a file
 
   SilverS3Bucket:
     Type: 'AWS::S3::Bucket'
     DeletionPolicy: Delete
     Properties:
       BucketName: eon-silver-bucket
-      #close permissions to read and write files to a lambda function
 
   RawBucketEventsQueue: 
     Type: AWS::SQS::Queue
@@ -79,12 +69,12 @@ Resources:
               ArnLike:
                 aws:SourceArn: "arn:aws:s3:::!GetAtt BronzeS3Bucket.BucketName"
       Queues:
-        - Ref: RawBucketEventsQueue
+        - !Ref RawBucketEventsQueue
 
 Outputs:
-  HelloWorldFunction:
+  BronzeTransformationFunction:
     Description: Bronze Function ARN
     Value: !GetAtt BronzeTransformationFunction.Arn
-  HelloWorldFunctionIamRole:
+  BronzeTransformationFunctionIamRole:
     Description: Implicit IAM Role created for BronzeTransformationFunction function
     Value: !GetAtt BronzeTransformationFunction.Arn
