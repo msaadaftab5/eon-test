@@ -1,6 +1,6 @@
 .DS_Store
-.venv
+.venv*
 *logs.txt
 .idea/
 __pycache__/
-.aws-sam/
+.aws-sam*

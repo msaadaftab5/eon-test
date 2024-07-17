@@ -31,7 +31,14 @@ Resources:
           queue_name: !Ref RawBucketEventsQueue
       Layers:
         - !Ref AWSWranglerLayer
-#         We can use the AWS Provided layer for AWS Wrangler but it cannot work with localstack
+      Policies:
+        - S3ReadPolicy:
+            BucketName: !Ref BronzeS3Bucket
+        - S3WritePolicy:
+            BucketName: !Ref SilverS3Bucket
+        - SQSPollerPolicy:
+            QueueName: !Ref RawBucketEventsQueue
+  #         We can use the AWS Provided layer for AWS Wrangler but it cannot work with localstack
 #         arn:aws:serverlessrepo:us-east-1:336392948345:applications/aws-data-wrangler-layer-py3-9
   BronzeS3Bucket:
     Type: 'AWS::S3::Bucket'

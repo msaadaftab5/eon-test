@@ -66,3 +66,8 @@ def lambda_handler(event, context):
             "message": "Queue Processedd Successfully",
         }),
     }
+
+def local_runable():
+    QUEUE_NAME = "EonMessageQueue"
+    SILVER_BUCKET = "eon-silver-bucket"
+    process_queue(QUEUE_NAME, SILVER_BUCKET)
