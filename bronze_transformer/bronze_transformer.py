@@ -36,7 +36,7 @@ def transform_and_save(s3_uri, silver_bucket):
     path_to_save = f"s3://{silver_bucket}/source={source}/{asset_name}/{year}/{month}/{day}/{file_name}"
     save_to_silver_bucket(df, path_to_save)
 def process_queue(queue_name, silver_bucket):
-    sqs = SQS(QUEUE_NAME)
+    sqs = SQS(queue_name)
     while sqs.check_queue_for_new_messages():
         to_delete = []
         for message in sqs.get_new_messages():
@@ -52,20 +52,24 @@ def process_queue(queue_name, silver_bucket):
                 sqs.remove_message(message['ReceiptHandle'])
         if to_delete: sqs.remove_messages_batch(to_delete)
 
-if __name__ == "__main__":
-    # To be extracted from ENV Variables
+# if __name__ == "__main__":
+#     # To be extracted from ENV Variables
+#     QUEUE_NAME = "EonMessageQueue"
+#     SILVER_BUCKET = "eon-silver-bucket"
+#     sqs = SQS(QUEUE_NAME)
+#     # sqs.delete_all_messages()
+#     process_queue(QUEUE_NAME, SILVER_BUCKET)
+#
+
+def lambda_handler(event, context):
     QUEUE_NAME = "EonMessageQueue"
     SILVER_BUCKET = "eon-silver-bucket"
     sqs = SQS(QUEUE_NAME)
     # sqs.delete_all_messages()
     process_queue(QUEUE_NAME, SILVER_BUCKET)
-
-
-# def lambda_handler(event, context):
-#
-#     return {
-#         "statusCode": 200,
-#         "body": json.dumps({
-#             "message": "hello world",
-#         }),
-#     }
+    return {
+        "statusCode": 200,
+        "body": json.dumps({
+            "message": "hello world",
+        }),
+    }

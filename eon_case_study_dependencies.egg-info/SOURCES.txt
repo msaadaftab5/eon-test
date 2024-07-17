@@ -1,0 +1,11 @@
+README.md
+setup.py
+aws_utils/SQS.py
+aws_utils/__init__.py
+aws_utils/boto3_manager.py
+aws_utils/s3_reader.py
+aws_utils/s3_writer.py
+eon_case_study_dependencies.egg-info/PKG-INFO
+eon_case_study_dependencies.egg-info/SOURCES.txt
+eon_case_study_dependencies.egg-info/dependency_links.txt
+eon_case_study_dependencies.egg-info/top_level.txt

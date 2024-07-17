@@ -1,0 +1,1 @@
+{"errorMessage": "Unable to import module 'bronze_transformer': No module named 'awswrangler'", "errorType": "Runtime.ImportModuleError", "requestId": "ffea269f-fe0e-431e-a909-323f01413f01", "stackTrace": []}

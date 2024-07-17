@@ -5,7 +5,6 @@ import json
 
 
 DATE_TODAY = datetime.today()
-BRONZE_FILES_PREFIX = 'bronze'.strip()
 
 def format_S3_key(file_name):
     with open(file_name, 'r', encoding='utf-8') as file:

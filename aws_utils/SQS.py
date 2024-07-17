@@ -1,5 +1,5 @@
 from aws_utils.boto3_manager import get_sqs_client
-from local_utils.LoggerGenerator import LoggerGenerator
+# from local_utils.LoggerGenerator import LoggerGenerator
 
 
 class SQS:
@@ -7,7 +7,7 @@ class SQS:
         self.__name = name
         self.__boto3_client = get_sqs_client()
         self.__queue_url = self.__boto3_client.get_queue_url(QueueName=self.__name)['QueueUrl']
-        self.__logger = LoggerGenerator().get_logger("file", "SQSLogger")
+        # self.__logger = LoggerGenerator().get_logger("file", "SQSLogger")
 
     @property
     def name(self):
@@ -27,7 +27,7 @@ class SQS:
 
 
     def get_new_messages(self):
-        self.__logger.log_debug(f"Getting new messages from: {self.name}")
+        # self.__logger.log_debug(f"Getting new messages from: {self.name}")
         return self.boto3_client.receive_message(
             QueueUrl=self.queue_url,
             MaxNumberOfMessages=2,
@@ -47,9 +47,9 @@ class SQS:
         )
 
     def check_queue_for_new_messages(self):
-        self.__logger.log_debug(f"Checking Queue: {self.name} for new messages")
+        # self.__logger.log_debug(f"Checking Queue: {self.name} for new messages")
         return len(self.get_new_messages()) > 0
 
     def delete_all_messages(self):
-        self.__logger.log_debug(f"Deleting all Messages from Queue: {self.name}")
+        # self.__logger.log_debug(f"Deleting all Messages from Queue: {self.name}")
         self.boto3_client.purge_queue(QueueUrl=self.queue_url)

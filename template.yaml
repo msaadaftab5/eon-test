@@ -15,16 +15,27 @@ Description: >
 #     LoggingConfig:
 #       LogFormat: JSON
 Resources:
-  HelloWorldFunction:
+  AWSWranglerLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: aws-wrangler-layer
+      Description: AWS Wrangler layer from GitHub
+      ContentUri: awswrangler-layer-3.9.0-py3.11.zip
+      CompatibleRuntimes:
+        - python3.9
+
+  BronzeTransformationFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: hello_world/
-      Handler: app.lambda_handler
+      CodeUri: bronze_transformer/
+      Handler: bronze_transformer.lambda_handler
       Runtime: python3.9
       Architectures:
       - x86_64
-      Timeout: 3
-      MemorySize: 128
+      Timeout: 900
+      MemorySize: 1024
+      Layers:
+        - !Ref AWSWranglerLayer
 
     # You can add LoggingConfig parameters such as the Logformat, Log Group, and SystemLogLevel or ApplicationLogLevel. Learn more here https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html#sam-function-loggingconfig.
       LoggingConfig:
@@ -72,8 +83,8 @@ Resources:
 
 Outputs:
   HelloWorldFunction:
-    Description: Hello World Lambda Function ARN
-    Value: !GetAtt HelloWorldFunction.Arn
+    Description: Bronze Function ARN
+    Value: !GetAtt BronzeTransformationFunction.Arn
   HelloWorldFunctionIamRole:
-    Description: Implicit IAM Role created for Hello World function
-    Value: !GetAtt HelloWorldFunctionRole.Arn
+    Description: Implicit IAM Role created for BronzeTransformationFunction function
+    Value: !GetAtt BronzeTransformationFunction.Arn

@@ -1,0 +1,9 @@
+aws_utils/SQS.py,sha256=bC2oGnt2BWGg8f-klHlcH5hG5VVOYOSKDPKIoWh3bg4,1691
+aws_utils/__init__.py,sha256=47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU,0
+aws_utils/boto3_manager.py,sha256=e609dIWtWKMaYWhEQVtyRvdOapKn_HEKOP_Su8VT3ZY,250
+aws_utils/s3_reader.py,sha256=4SHC71YQtTA--ylV635IboiRnEEuJzJGosS4CW6TEG0,491
+aws_utils/s3_writer.py,sha256=IgohWyX5eF1invckSsic90QQwddXrqersHRYFsVaJyE,758
+eon_case_study_dependencies-1.0.0.dist-info/METADATA,sha256=MTod_QNTiFxS8Dfm0yB72Jznp-ZB99WMIXCIX84vxcI,252
+eon_case_study_dependencies-1.0.0.dist-info/WHEEL,sha256=GJ7t_kWBFywbagK5eo9IoUwLW6oyOeTKmQ-9iHFVNxQ,92
+eon_case_study_dependencies-1.0.0.dist-info/top_level.txt,sha256=qqyxAZlbuJb3-4aQYzx1rty8qRCS2euxuZ-9H65OrvY,10
+eon_case_study_dependencies-1.0.0.dist-info/RECORD,,
