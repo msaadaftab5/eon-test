@@ -1,10 +1,10 @@
 Metadata-Version: 2.1
 Name: eon-case-study-dependencies
 Version: 1.0.0
-Summary: A description of your project
+Summary: This project contains some self written utility back end for aws services helping development on local stack
 Home-page: UNKNOWN
-Author: Your Name
-Author-email: your.email@example.com
+Author: Muhammad Saad
+Author-email: msaadaftab5@gmail.com
 License: UNKNOWN
 Platform: UNKNOWN
 Requires-Python: >=3.9

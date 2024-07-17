@@ -9,3 +9,4 @@ eon_case_study_dependencies.egg-info/PKG-INFO
 eon_case_study_dependencies.egg-info/SOURCES.txt
 eon_case_study_dependencies.egg-info/dependency_links.txt
 eon_case_study_dependencies.egg-info/top_level.txt
+test/test_eon_data_lake.py
